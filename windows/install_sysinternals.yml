@@ -1,0 +1,10 @@
+---
+- name: Install Sysinternals
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Install Sysinternals Suite
+      win_chocolatey:
+        name: sysinternals
+        state: present

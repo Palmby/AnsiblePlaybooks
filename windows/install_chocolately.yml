@@ -1,0 +1,9 @@
+- name: Install Chocolatey
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Ensure Chocolatey is installed
+      win_chocolatey:
+        name: chocolatey
+        state: present

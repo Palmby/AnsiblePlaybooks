@@ -1,0 +1,9 @@
+- name: Install Putty
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Install Putty
+      win_chocolatey:
+        name: putty.install
+        state: absent
