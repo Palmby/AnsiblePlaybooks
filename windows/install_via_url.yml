@@ -1,10 +1,10 @@
-- name: Install Nitro
+- name: Install Application via URL
   hosts: all
   gather_facts: false
 
   vars:
-    download_url: "https://ansiblefiles221.blob.core.windows.net/files/nitro.msi?sp=racw&st=2026-07-01T11:57:55Z&se=2026-07-08T20:12:55Z&spr=https&sv=2026-02-06&sr=b&sig=Ls89Xf8LAoA0rSvR4dqN3VxQAhanDEfiBkBjT2Ds5jE%3D"
-    dest_path: "C:\\temp\\nitro.msi"
+    download_url: "" #can be in azure Blob or get the url installer
+    dest_path: "C:\\temp\\#filename"
 
   tasks:
     - name: Ensure Temp Directory Exists
