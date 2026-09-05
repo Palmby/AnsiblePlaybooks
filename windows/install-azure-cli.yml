@@ -1,0 +1,41 @@
+---
+# Install Azure CLI on Windows hosts via Chocolatey.
+#
+# Requires the collections on the control node:
+#   ansible-galaxy collection install chocolatey.chocolatey ansible.windows
+#
+# Run with:
+#   ansible-playbook -i inventory.ini install-azure-cli.yml
+
+- name: Install Azure CLI on Windows via Chocolatey
+  hosts: windows
+  gather_facts: true
+
+  vars:
+    # Pin to a specific version, e.g. "2.64.0". Leave empty to track latest.
+    azure_cli_version: ""
+    chocolatey_source: "https://community.chocolatey.org/api/v2/"
+
+  tasks:
+    - name: Ensure Chocolatey is installed
+      chocolatey.chocolatey.win_chocolatey:
+        name: chocolatey
+        state: present
+
+    - name: Install Azure CLI
+      chocolatey.chocolatey.win_chocolatey:
+        name: azure-cli
+        version: "{{ azure_cli_version | default(omit, true) }}"
+        state: "{{ 'present' if azure_cli_version else 'latest' }}"
+        source: "{{ chocolatey_source }}"
+        timeout: 1800
+      register: azure_cli_install
+
+    - name: Verify Azure CLI responds
+      ansible.windows.win_command: az version
+      register: az_version
+      changed_when: false
+
+    - name: Show installed Azure CLI version
+      ansible.builtin.debug:
+        msg: "azure-cli {{ (az_version.stdout | from_json)['azure-cli'] }}"
